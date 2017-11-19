@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int buttonNumber = 3; //
     private LinearLayout gameLayout, buttonsLayout;
+    private int[] colorsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,12 +19,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         buttonsLayout = (LinearLayout) findViewById(R.id.buttonsDisplay);
-        setColoredButtons();
+        initColors();
+        setButtons();
+    }
+
+    /**
+     * load the colors*/
+    public void initColors(){
+
+        try{
+            //Retrieve the colors from an array
+            colorsList = getResources().getIntArray(R.array.boardColors);
+        }
+        catch(Exception e){
+            Log.e("MainActivity", "Error when loading colors");
+        }
     }
 
     /**
      * add interactive 'buttons' under the board*/
-    public void setColoredButtons(){
+    public void setButtons(){
 
         int i;
 
@@ -32,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
             //adds a button to the layout
             final Button aButton = new Button(this);
 
-            aButton.setText(i);
+            //aButton.setText(i);
+            aButton.setBackgroundColor(colorsList[i]);
             aButton.setTextSize(40);
             aButton.setOnClickListener(new View.OnClickListener() {
 

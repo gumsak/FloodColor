@@ -17,9 +17,9 @@
             tools:text="TEXT"/>
     </LinearLayout>
 
-   <!-- <com.example.gmsk.floodcolor.BoardView
+    <com.example.gmsk.floodcolor.BoardView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />-->
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/buttonsDisplay"
