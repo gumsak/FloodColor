@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int buttonNumber = 3; //
+    private int buttonNumber = 4; //
     private LinearLayout gameLayout, buttonsLayout;
     private int[] colorsList;
 
