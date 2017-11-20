@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 public class MainActivity extends AppCompatActivity {
 
     private int buttonNumber = 4; //
-    private LinearLayout gameLayout, buttonsLayout;
+    private LinearLayout gameLayout;
     private int[] colorsList;
 
     @Override
@@ -18,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        buttonsLayout = (LinearLayout) findViewById(R.id.buttonsDisplay);
+        LinearLayout buttonsLayout = (LinearLayout) findViewById(R.id.buttonsDisplay);
         initColors();
-        setButtons();
+        setButtons(buttonsLayout);
     }
 
     /**
@@ -38,18 +38,20 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * add interactive 'buttons' under the board*/
-    public void setButtons(){
+    public void setButtons(LinearLayout layout){
 
         int i;
 
+        /*create the given number of buttons and add them to the layout */
         for(i=0; i<buttonNumber; i++){
 
-            //adds a button to the layout
+            //create a new button
             final Button aButton = new Button(this);
 
             //aButton.setText(i);
             aButton.setBackgroundColor(colorsList[i]);
-            aButton.setTextSize(40);
+            //aButton.setPadding(10, 10, 10, 10);
+            //aButton.setTextSize(40);
             aButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -58,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            buttonsLayout.addView(aButton);
+            //add the button to the layout
+            layout.addView(aButton);
         }
     }
 }

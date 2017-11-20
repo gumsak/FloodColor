@@ -17,7 +17,7 @@ import java.util.Random;
 public class BoardView extends View {
 
     private int[][] board;
-    private int boardSize = 18;
+    private int boardSize = 10;
     private int cellSize = 50;
     private int colorsNumber = 4;
     private Paint[] paint;
@@ -48,6 +48,11 @@ public class BoardView extends View {
   TODO : add an anchor to center the board in the view
   */
 
+  public void setBoard(){
+
+
+  }
+
     /**
      * Draw the board*/
     @Override
@@ -61,7 +66,7 @@ public class BoardView extends View {
 
         for (j = 1; j <= boardSize; j++) {
             for (i = 1; i <= boardSize; i++) {
-                k=getRand(3);
+                k=getRand(colorsNumber);
                     canvas.drawRect(i * cellSize + 180, j * cellSize + 180,
                             (i + 1) * cellSize + 180, (j + 1) * cellSize + 180, paint[k]);
 
