@@ -11,5 +11,5 @@ public class Cell {
 
     private int number;
     private Paint paint;
-    
+
 }

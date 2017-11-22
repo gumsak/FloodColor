@@ -23,9 +23,28 @@ public class BoardView extends View {
     private Paint[] paint;
     private int[] colorList;
 
+    // anchors used to center the board in the view
+    int boardTopAnchor;// Y position of our anchor
+    int boardLeftAnchor;// X position of our anchor
+
     public BoardView(Context context, AttributeSet attrs){
         super(context, attrs);
 
+        initData();
+
+    }
+
+    //load and/or initialize the data used
+    public void initData(){
+
+        /*load and set the colors*/
+        colorList = getResources().getIntArray(R.array.boardColors);
+        paint = new Paint[colorList.length];
+        setPaints();
+
+        /*initialize the anchors*/
+        boardTopAnchor = (getHeight()- boardSize*cellSize)/2;
+        boardLeftAnchor = (getWidth()- boardSize*cellSize)/2;
     }
 
     public void setPaints(){
@@ -34,8 +53,8 @@ public class BoardView extends View {
             paint[i] = new Paint();
             paint[i].setColor(colorList[i]);
         }
-
     }
+
     /**
      * generate a random int between 0 and the given number-1
      * */
@@ -44,34 +63,25 @@ public class BoardView extends View {
         Random rand = new Random();
         return rand.nextInt(n);
     }
-  /*
-  TODO : add an anchor to center the board in the view
-  */
 
-  public void setBoard(){
+    /**Initialize the board in the given canvas*/
+  public void setBoard(Canvas canvas){
 
+      int i, j, k;
 
+      for (j = 1; j <= boardSize; j++) {
+          for (i = 1; i <= boardSize; i++) {
+              k=getRand(colorsNumber);
+              canvas.drawRect(i * cellSize + 180, j * cellSize + 180,
+                      (i + 1) * cellSize + 180, (j + 1) * cellSize + 180, paint[k]);
+          }
+      }
   }
-
     /**
-     * Draw the board*/
+     * Draw in the view*/
     @Override
     protected void onDraw(Canvas canvas){
 
-        colorList = getResources().getIntArray(R.array.boardColors);
-        paint = new Paint[colorList.length];
-
-        setPaints();
-        int i, j, k;
-
-        for (j = 1; j <= boardSize; j++) {
-            for (i = 1; i <= boardSize; i++) {
-                k=getRand(colorsNumber);
-                    canvas.drawRect(i * cellSize + 180, j * cellSize + 180,
-                            (i + 1) * cellSize + 180, (j + 1) * cellSize + 180, paint[k]);
-
-            }
-        }
-
+        setBoard(canvas);
     }
 }
