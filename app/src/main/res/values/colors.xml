@@ -8,6 +8,7 @@
     <color name="blue">#1d2fd2</color>
     <color name="green">#14e92d</color>
     <color name="pink">#f406bc</color>
+    <color name="grey">#a1949e</color>
 
 
     <array name="boardColors">

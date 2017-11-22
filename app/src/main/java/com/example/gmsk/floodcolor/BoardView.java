@@ -16,12 +16,13 @@ import java.util.Random;
 
 public class BoardView extends View {
 
-    private int[][] board;
-    private int boardSize = 10;
-    private int cellSize = 50;
+    private Cell[][] board;//2d board made out of cells
+    private int boardSize = 5;
+    private int cellSize;
     private int colorsNumber = 4;
     private Paint[] paint;
     private int[] colorList;
+    private int mSize = 1050;
 
     // anchors used to center the board in the view
     int boardTopAnchor;// Y position of our anchor
@@ -42,9 +43,15 @@ public class BoardView extends View {
         paint = new Paint[colorList.length];
         setPaints();
 
+         /*initialize the cells' size*/
+        cellSize = mSize / boardSize;
+
         /*initialize the anchors*/
-        boardTopAnchor = (getHeight()- boardSize*cellSize)/2;
-        boardLeftAnchor = (getWidth()- boardSize*cellSize)/2;
+        boardTopAnchor = (mSize - boardSize*cellSize)/2;
+        boardLeftAnchor = (mSize - boardSize*cellSize)/2;
+
+        /*Initialize the board's size*/
+        board= new Cell[boardSize][boardSize];
     }
 
     public void setPaints(){
@@ -69,14 +76,32 @@ public class BoardView extends View {
 
       int i, j, k;
 
-      for (j = 1; j <= boardSize; j++) {
-          for (i = 1; i <= boardSize; i++) {
-              k=getRand(colorsNumber);
-              canvas.drawRect(i * cellSize + 180, j * cellSize + 180,
-                      (i + 1) * cellSize + 180, (j + 1) * cellSize + 180, paint[k]);
+      for (j = 0; j < boardSize; j++) {
+          for (i = 0; i < boardSize; i++) {
+              //k=getRand(colorsNumber);
+              /*draw the cells (squares)*/
+              /*void drawRect(float left, float top, float right, float bottom, Paint paint)*/
+              canvas.drawRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
+                      (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor, paint[k]);
           }
       }
   }
+
+  /**method used to change the board's active color when the user clicks a colored action button */
+  public void changeColor(){
+
+
+
+  }
+
+  /**
+   * Check a cell's neighbors and return the ones with the same color*/
+  public void checkNeighbor(Cell cell){
+
+
+
+  }
+
     /**
      * Draw in the view*/
     @Override

@@ -1,5 +1,6 @@
 package com.example.gmsk.floodcolor;
 
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
             final Button aButton = new Button(this);
 
             //aButton.setText(i);
-            aButton.setBackgroundColor(colorsList[i]);
+            //////aButton.setBackgroundColor(colorsList[i]);
+            aButton.getBackground().setColorFilter(colorsList[i], PorterDuff.Mode.MULTIPLY);
             //aButton.setPadding(10, 10, 10, 10);
             //aButton.setTextSize(40);
             aButton.setOnClickListener(new View.OnClickListener() {
