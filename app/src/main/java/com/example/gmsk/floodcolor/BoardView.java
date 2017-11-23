@@ -3,6 +3,7 @@ package com.example.gmsk.floodcolor;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -16,13 +17,13 @@ import java.util.Random;
 
 public class BoardView extends View {
 
-    private Cell[][] board;//2d board made out of cells
-    private int boardSize = 5;
+    private Cell[][] board;//2D board made out of cells
+    private int boardSize = 20;
     private int cellSize;
     private int colorsNumber = 4;
     private Paint[] paint;
     private int[] colorList;
-    private int mSize = 1050;
+    private int mSize = 1050;//screen's width/height
 
     // anchors used to center the board in the view
     int boardTopAnchor;// Y position of our anchor
@@ -32,7 +33,7 @@ public class BoardView extends View {
         super(context, attrs);
 
         initData();
-
+        initBoard();
     }
 
     //load and/or initialize the data used
@@ -51,7 +52,7 @@ public class BoardView extends View {
         boardLeftAnchor = (mSize - boardSize*cellSize)/2;
 
         /*Initialize the board's size*/
-        board= new Cell[boardSize][boardSize];
+        board = new Cell[boardSize][boardSize];
     }
 
     public void setPaints(){
@@ -71,6 +72,20 @@ public class BoardView extends View {
         return rand.nextInt(n);
     }
 
+    /**
+     * Initialize the board's data (size, cell's color, etc...)*/
+    public void initBoard(){
+
+        int i, j;
+
+        /*give each cell a random color*/
+        for (j = 0; j < boardSize; j++) {
+            for (i = 0; i < boardSize; i++) {
+                board[j][i] = new Cell(paint[getRand(colorsNumber)]);
+            }
+        }
+    }
+
     /**Initialize the board in the given canvas*/
   public void setBoard(Canvas canvas){
 
@@ -78,13 +93,30 @@ public class BoardView extends View {
 
       for (j = 0; j < boardSize; j++) {
           for (i = 0; i < boardSize; i++) {
-              //k=getRand(colorsNumber);
-              /*draw the cells (squares)*/
-              /*void drawRect(float left, float top, float right, float bottom, Paint paint)*/
+              k=getRand(colorsNumber);
+              //draw the cells (squares)
+              //void drawRect(float left, float top, float right, float bottom, Paint paint)
+            //  Rect r = new Rect();
+
+              board[j][i].setRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
+                      (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor);
+
+              canvas.drawRect(board[j][i].getRect(), board[j][i].getCellColor());
+
+              /*canvas.drawRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
+                      (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor, paint[k]);*/
+          }
+      }
+
+      /*for (j = 0; j < boardSize; j++) {
+          for (i = 0; i < boardSize; i++) {
+              k=getRand(colorsNumber);
+              //draw the cells (squares)
+              //void drawRect(float left, float top, float right, float bottom, Paint paint)
               canvas.drawRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
                       (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor, paint[k]);
           }
-      }
+      }*/
   }
 
   /**method used to change the board's active color when the user clicks a colored action button */

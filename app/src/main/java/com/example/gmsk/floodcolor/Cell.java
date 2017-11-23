@@ -13,49 +13,66 @@ public class Cell {
     private int number;
 
     private Rect r;
-    private  boolean cState; //the cell's state (true = is part of the flood; false = is not)
+    private  boolean isInFlood; //the cell's state (true = is part of the flood; false = is not)
     private Paint paint; //the cell's color
 
     /*default Cell constructor*/
     public Cell(){
 
-        this.cState = false;
+        this.isInFlood = false;
 
         /*set gray as default color*/
         this.paint = new Paint();
         paint.setColor(Color.GRAY);
+        /*a rectangle will represent the cell*/
+        //this.r = new Rect(0,0,5,5);
     }
 
     /*Cell constructor with specific paint*/
     public Cell(Paint p){
 
-        this.cState = false;
+        this.isInFlood = false;
         //this.paint = new Paint();
         this.paint = p;
+
+        //this.r = new Rect(0,0,50,50);
     }
 
     /**
      * setter used to set a specific cell's color*/
-    public void setCellColor(Cell cell, Paint p){
+    public void setCellColor(Paint p){
 
-        cell.paint = p;
+        this.paint = p;
     }
 
     /**set the cell's state */
-    public void setState(Cell cell, boolean state){
+    public void setState(boolean state){
 
-        cell.cState = state;
+        this.isInFlood = state;
     }
+
+    /**set the cell's rectangle's size*/
+    public void setRect(int left, int top, int right, int bottom){
+
+        this.r = new Rect(left,top,right,bottom);
+    }
+
     /**
      * getter used to get a specific cell's color*/
-    public Paint getCellColor(Cell cell){
+    public Paint getCellColor(){
 
-        return cell.paint;
+        return this.paint;
     }
 
     /**get the cell's state */
-    public boolean getState(Cell cell){
+    public boolean getState(){
 
-        return cell.cState;
+        return this.isInFlood;
+    }
+
+    /**get the cell's rectangle*/
+    public Rect getRect(){
+
+        return this.r;
     }
 }
