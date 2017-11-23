@@ -1,2 +1,2 @@
 # FloodColor
-Flood color project
+Flood color project, work in progress
