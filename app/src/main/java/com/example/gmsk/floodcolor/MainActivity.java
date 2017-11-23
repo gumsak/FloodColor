@@ -1,8 +1,10 @@
 package com.example.gmsk.floodcolor;
 
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
             //create a new button
             final Button aButton = new Button(this);
             //aButton.setText(i);
-            //////aButton.setBackgroundColor(colorsList[i]);
-            aButton.getBackground().setColorFilter(colorsList[i], PorterDuff.Mode.MULTIPLY);
+            aButton.setBackgroundColor(colorsList[i]);
+           // aButton.getBackground().setColorFilter(colorsList[i], PorterDuff.Mode.MULTIPLY);
             //aButton.setPadding(10, 10, 10, 10);
             //aButton.setTextSize(40);
             aButton.setOnClickListener(new View.OnClickListener() {
@@ -71,16 +73,9 @@ public class MainActivity extends AppCompatActivity {
     /**get the color clicked by the user by retrieving the button's color*/
     public void getClickedColor(Button button){
 
-       // Drawable buttonBackground = button.getBackground();
-      /*  ColorDrawable buttonColor = (ColorDrawable) button.getBackground();
-
-        int colorId = ((ColorDrawable)buttonColor.getBackground()).getColor()
-        Log.i("result",""+colorId);*/
-        int color = 0;
-        Drawable background = button.getBackground();
-
-        color = ((ColorDrawable)background).getColor();
-        Log.i("result",""+color);
+        //Drawable buttonBackground = button.getBackground();
+        ColorDrawable buttonColor = (ColorDrawable) button.getBackground();
+        Log.i("result",""+buttonColor);
 
     }
 }

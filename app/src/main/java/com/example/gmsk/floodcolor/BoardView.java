@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import java.util.Random;
@@ -122,17 +123,46 @@ public class BoardView extends View {
   /**method used to change the board's active color when the user clicks a colored action button */
   public void changeColor(){
 
-
-
+        Log.i("Same color","changing");
   }
 
-  /**
-   * Check a cell's neighbors and return the ones with the same color*/
-  public void checkNeighbor(Cell cell){
+    /**
+     * Check a cell's neighbors and return the ones with the same color*/
+    public void checkNeighbor(Cell[][] cell) {
 
+        int s = cell.length;
+        Paint cellC;
 
+        for (int j = 0; j < s; j++) {
+            for (int i = 0; i < s; i++) {
+                //if the cell is part of the flood
+                /**TODO : change to cell[i][j].getState() ie to true*/
+                if (!cell[j][i].getState()) {
+                    //then check its neighbors : right neigh, bot neigh, left neigh, top neigh
+                    if(!cell[j][i+1].getState() && compareColors(cell[j][i],cell[j][i+1])){
+                        changeColor();
+                    }
+                    else if(!cell[j+1][i].getState() && compareColors(cell[j][i],cell[j+1][i])){
+                        changeColor();
+                    }
+                    else if(!cell[j][i-1].getState() && compareColors(cell[j][i],cell[j][i-1])){
+                        changeColor();
+                    }
+                    else if(!cell[j-1][i].getState() && compareColors(cell[j][i],cell[j-1][i])){
+                        changeColor();
+                    }
+                    else Log.e("Erreur","PB couleur");
+                }
+            }
+        }
+    }
 
-  }
+    /**Compare 2 cells' colors
+     * @return true if the colors match ; false if they don't*/
+    public boolean compareColors(Cell c1, Cell c2){
+
+        return(c1.getCellColor() == c2.getCellColor());
+    }
 
     /**
      * Draw in the view*/
@@ -140,5 +170,6 @@ public class BoardView extends View {
     protected void onDraw(Canvas canvas){
 
         setBoard(canvas);
+        checkNeighbor(board);
     }
 }
