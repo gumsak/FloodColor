@@ -2,6 +2,7 @@ package com.example.gmsk.floodcolor;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -19,10 +20,11 @@ import java.util.Random;
 public class BoardView extends View {
 
     private Cell[][] board;//2D board made out of cells
-    private int boardSize = 20;
+    private int boardSize;
     private int cellSize;
     private int colorsNumber = 4;
     private Paint[] paint;
+    private Paint testPaint;
     private int[] colorList;
     private int mSize = 1050;//screen's width/height
 
@@ -35,6 +37,11 @@ public class BoardView extends View {
 
         initData();
         initBoard();
+    }
+
+    public void setBoardSize(int size){
+
+        this.boardSize = size;
     }
 
     //load and/or initialize the data used
@@ -62,10 +69,12 @@ public class BoardView extends View {
             paint[i] = new Paint();
             paint[i].setColor(colorList[i]);
         }
+        testPaint=new Paint();
+        testPaint.setColor(Color.BLACK);
     }
 
     /**
-     * generate a random int between 0 and the given number-1
+     * generate a random int between 0 and n-1
      * */
     public int getRand(int n){
 
@@ -87,27 +96,26 @@ public class BoardView extends View {
         }
     }
 
-    /**Initialize the board in the given canvas*/
-  public void setBoard(Canvas canvas){
+    /**Draw the board in the given canvas*/
+    public void setBoard(Canvas canvas){
 
-      int i, j, k;
+        int i, j, k;
 
-      for (j = 0; j < boardSize; j++) {
-          for (i = 0; i < boardSize; i++) {
-              k=getRand(colorsNumber);
-              //draw the cells (squares)
-              //void drawRect(float left, float top, float right, float bottom, Paint paint)
-            //  Rect r = new Rect();
+        for (j = 0; j < boardSize; j++) {
+            for (i = 0; i < boardSize; i++) {
 
-              board[j][i].setRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
-                      (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor);
+              /*draw the cells : void drawRect(float left, float top, float right, float bottom, Paint paint)*/
+                board[j][i].setRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
+                        (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor);
 
-              canvas.drawRect(board[j][i].getRect(), board[j][i].getCellColor());
+                setColor(j,i);///////
+
+                canvas.drawRect(board[j][i].getRect(), board[j][i].getCellColor());
 
               /*canvas.drawRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
                       (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor, paint[k]);*/
-          }
-      }
+            }
+        }
 
       /*for (j = 0; j < boardSize; j++) {
           for (i = 0; i < boardSize; i++) {
@@ -118,17 +126,17 @@ public class BoardView extends View {
                       (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor, paint[k]);
           }
       }*/
-  }
+    }
 
-  /**method used to change the board's active color when the user clicks a colored action button */
-  public void changeColor(){
-
-        Log.i("Same color","changing");
-  }
+    /**method used to change the board's active color when the user clicks a colored action button */
+    public void setColor(int i, int j){
+if(board[i][j].getCellColor() == paint[1])
+        board[i][j].setCellColor(testPaint);
+    }
 
     /**
      * Check a cell's neighbors and return the ones with the same color*/
-    public void checkNeighbor(Cell[][] cell) {
+ /*   public void checkNeighbor(Cell[][] cell) {
 
         int s = cell.length;
         Paint cellC;
@@ -136,7 +144,7 @@ public class BoardView extends View {
         for (int j = 0; j < s; j++) {
             for (int i = 0; i < s; i++) {
                 //if the cell is part of the flood
-                /**TODO : change to cell[i][j].getState() ie to true*/
+                //TODO : change to cell[i][j].getState() ie to true
                 if (!cell[j][i].getState()) {
                     //then check its neighbors : right neigh, bot neigh, left neigh, top neigh
                     if(!cell[j][i+1].getState() && compareColors(cell[j][i],cell[j][i+1])){
@@ -155,7 +163,7 @@ public class BoardView extends View {
                 }
             }
         }
-    }
+    }*/
 
     /**Compare 2 cells' colors
      * @return true if the colors match ; false if they don't*/
@@ -170,6 +178,6 @@ public class BoardView extends View {
     protected void onDraw(Canvas canvas){
 
         setBoard(canvas);
-        checkNeighbor(board);
+        //checkNeighbor(board);
     }
 }

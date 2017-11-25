@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private BoardView boardView;
     private int buttonNumber = 4; //
     private LinearLayout gameLayout;
     private int[] colorsList;
@@ -24,8 +26,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         LinearLayout buttonsLayout = (LinearLayout) findViewById(R.id.buttonsDisplay);
+        boardView = (BoardView) findViewById(R.id.boardLayout);
+
+        initBoard();
         initColors();
         setButtons(buttonsLayout);
+    }
+
+    /**Initialize the bord*/
+    public void initBoard(){
+
+        boardView.setBoardSize(5);
     }
 
     /**
@@ -62,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     //Log.i("Button", "click");
                     getClickedColor(aButton);
+                    //boardView.setColor();
                 }
             });
 
