@@ -6,9 +6,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
- * Created by mb on 19/11/17.
- *
+/***
  * This is the BoardView Class, it will take care of drawing a board in a View
  */
 

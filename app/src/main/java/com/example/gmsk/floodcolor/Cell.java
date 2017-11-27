@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 /**
- * Created by mb on 20/11/17.
  * represents a cell (seen as a colored box)
  */
 public class Cell {

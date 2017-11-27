@@ -50,18 +50,10 @@ public class Game {
                 this.board[j][i] = new Cell(paint[getRand(colorNumber)]);
                 this.board[j][i].setX(i);
                 this.board[j][i].setY(j);
-
             }
         }
         /*The 1st cell (top left) will be the starting point*/
         this.board[3][3].setState(true);
-    }
-    /*Change a cell's color*/
-    public void changeColor(Cell cell, int newColor){
-
-        Paint j = new Paint();
-        j.setColor(newColor);
-        cell.setCellColor(j);
     }
 
     /**
@@ -80,32 +72,49 @@ public class Game {
             for (int i = 0; i < bLen; i++) {
                 //if the cell is part of the flood
                 if (board[j][i].getState()){
-                    /*then check its neighbors : right neigh, bot neigh, left neigh, top neigh
+                    /*then check if its neighbors (right neigh, bot neigh, left neigh, top neigh)
                     are out of the flood and have the same color*/
-                    if(!board[j][i+1].getState() && compareColors(board[j][i+1],colorId)){
-                        changeColor(board[j][i], colorId);
-                        board[j][i+1].setState(true);
-                        checkNeighbor(button);
+                    //TODO : change the conditions, not working properly
+                    if(!isOutOfBound(j+1)) {
+                        if (!board[j + 1][i].getState() && compareColors(board[j + 1][i], colorId)) {
+                            changeColor(board[j][i], colorId);
+                            board[j + 1][i].setState(true);
+                            checkNeighbor(button);
+                        }
                     }
-                    if(!board[j+1][i].getState() && compareColors(board[j+1][i],colorId)){
-                        changeColor(board[j][i], colorId);
-                        board[j+1][i].setState(true);
-                        checkNeighbor(button);
+                    if(!isOutOfBound(j-1)) {
+                        if (!board[j-1][i].getState() && compareColors(board[j-1][i],colorId)){
+                            changeColor(board[j][i], colorId);
+                            board[j-1][i].setState(true);
+                            checkNeighbor(button);
+                        }
                     }
-                    if(!board[j][i-1].getState() && compareColors(board[j][i-1],colorId)){
-                        changeColor(board[j][i], colorId);
-                        board[j][i-1].setState(true);
-                        checkNeighbor(button);
+                    if(!isOutOfBound(i+1)) {
+                        if (!board[j][i + 1].getState() && compareColors(board[j][i + 1], colorId)) {
+                            changeColor(board[j][i], colorId);
+                            board[j][i + 1].setState(true);
+                            checkNeighbor(button);
+                        }
                     }
-                    if(!board[j-1][i].getState() && compareColors(board[j-1][i],colorId)){
-                        changeColor(board[j][i], colorId);
-                        board[j-1][i].setState(true);
-                        checkNeighbor(button);
+                    if(!isOutOfBound(i-1)) {
+                        if (!board[j][i - 1].getState() && compareColors(board[j][i - 1], colorId)) {
+                            changeColor(board[j][i], colorId);
+                            board[j][i - 1].setState(true);
+                            checkNeighbor(button);
+                        }
                     }
                     else Log.e("Erreur","PB couleur");
                 }
             }
         }
+    }
+
+    /**Change a cell's color and its state*/
+    public void changeColor(Cell cell, int newColor){
+
+        Paint tmp = new Paint();
+        tmp.setColor(newColor);
+        cell.setCellColor(tmp);
     }
 
     /**Compare 2 cells' colors
@@ -116,11 +125,10 @@ public class Game {
     }
 
     /**return true if the selected cell is not in the board (ie it doesn't exist)*/
-   /* public boolean isOutOfBound(Cell cell){
+    public boolean isOutOfBound(int n){
 
-        int j, i;
-        if(cell[][])
-    }*/
+        return (n < 0 || n >= boardSize);
+    }
 
     /**
      * generate a random int between 0 and n-1
