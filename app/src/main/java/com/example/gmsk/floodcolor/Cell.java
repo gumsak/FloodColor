@@ -15,6 +15,7 @@ public class Cell {
     private Rect r;
     private  boolean isInFlood; //the cell's state (true = is part of the flood; false = is not)
     private Paint paint; //the cell's color
+    private int x, y;
 
     /*default Cell constructor*/
     public Cell(){
@@ -56,6 +57,9 @@ public class Cell {
 
         this.r = new Rect(left,top,right,bottom);
     }
+    public void setX(int num){this.x = num;}
+
+    public void setY(int num){ this.y = num;}
 
     /**
      * getter used to get a specific cell's color*/
@@ -64,11 +68,19 @@ public class Cell {
         return this.paint;
     }
 
+    public int getColor(){
+
+        return this.paint.getColor();
+    }
     /**get the cell's state */
     public boolean getState(){
 
         return this.isInFlood;
     }
+
+    public int getX(){return this.x;}
+
+    public int getY(){return this.y;}
 
     /**get the cell's rectangle*/
     public Rect getRect(){

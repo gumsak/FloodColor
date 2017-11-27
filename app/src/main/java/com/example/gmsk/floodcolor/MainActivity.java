@@ -1,10 +1,7 @@
 package com.example.gmsk.floodcolor;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PaintDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,8 +13,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private BoardView boardView;
-    private int buttonNumber = 4; //
+    private Game game;
+    private int colorsCount = 4, boardSize = 10; //
     private LinearLayout gameLayout;
+    private Paint[] paint;
     private int[] colorsList;
 
     @Override
@@ -28,28 +27,53 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout buttonsLayout = (LinearLayout) findViewById(R.id.buttonsDisplay);
         boardView = (BoardView) findViewById(R.id.boardLayout);
 
-        initBoard();
         initColors();
         setButtons(buttonsLayout);
+        startGame();
+    }
+
+    public void startGame(){
+        this.game = new Game(boardSize, colorsCount, paint);
+        //this.game.initBoard();
+        initBoard();
     }
 
     /**Initialize the bord*/
     public void initBoard(){
 
-        boardView.setBoardSize(5);
+        boardView.setGame(game);
+        boardView.setBoardSize(boardSize);
+        boardView.initData();
+        //boardView.retrieveBoard(game.getBoard());
+
+
     }
 
-    /**
-     * load the colors*/
+    /** load the colors*/
     public void initColors(){
+ /*load and set the colors*/
 
         try{
             //Retrieve the colors from an array
             colorsList = getResources().getIntArray(R.array.boardColors);
+            //convert the colors into paints to be used with drawRect()
+            setPaints();
         }
         catch(Exception e){
             Log.e("MainActivity", "Error when loading colors");
         }
+    }
+
+    /**load the paints that will be used*/
+    public void setPaints(){
+
+        paint = new Paint[colorsList.length];
+
+        for(int i = 0; i< colorsList.length; i++){
+            paint[i] = new Paint();
+            paint[i].setColor(colorsList[i]);
+        }
+        boardView.setPaint(paint);
     }
 
     /**
@@ -59,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         int i;
 
         /*create the given number of buttons and add them to the layout */
-        for(i=0; i<buttonNumber; i++){
+        for(i=0; i< colorsCount; i++){
 
             //create a new button
             final Button aButton = new Button(this);
@@ -73,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     //Log.i("Button", "click");
                     getClickedColor(aButton);
-                    //boardView.setColor();
+                   // game.changeColor();
+                    game.checkNeighbor(aButton);
+                    boardView.setGame(game);
                 }
             });
 
