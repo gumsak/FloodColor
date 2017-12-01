@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /***
@@ -18,6 +19,7 @@ public class BoardView extends View {
     private int cellSize;
     private Paint[] paint;
     private int mSize = 1050;//screen's width/height
+private int s;
 
     // anchors used to center the board in the view
     int boardTopAnchor;// Y position of our anchor
@@ -33,11 +35,15 @@ public class BoardView extends View {
     /**set the actual game we are about to play*/
     public void setGame(Game g){
         this.game = g;
-        invalidate();
+        invalidate();//will redraw (update) the view with the new data
     }
 
     public void setBoardSize(int size){
         this.boardSize = size;
+    }
+
+    public void setS(int size){
+        this.s = size;
     }
 
     public void setPaint(Paint p[]){
@@ -49,7 +55,8 @@ public class BoardView extends View {
 
         /*initialize the cells' size*/
         cellSize = mSize / boardSize;
-
+int y = this.s;
+        int z = getHeight();
         /*initialize the anchors*/
         boardTopAnchor = (mSize - boardSize*cellSize)/2;
         boardLeftAnchor = (mSize - boardSize*cellSize)/2;
@@ -70,7 +77,7 @@ public class BoardView extends View {
                 board[j][i].setRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
                         (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor);
 
-                canvas.drawRect(board[j][i].getRect(), board[j][i].getCellColor());
+                canvas.drawRect(board[j][i].getRect(), board[j][i].getCellPaint());
 
               /*canvas.drawRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
                       (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor, paint[k]);*/
@@ -91,7 +98,9 @@ public class BoardView extends View {
      * Draw in the view*/
     @Override
     protected void onDraw(Canvas canvas){
-
         drawBoard(canvas);
+
+        int q = getWidth();
+        Log.i("",""+q);
     }
 }

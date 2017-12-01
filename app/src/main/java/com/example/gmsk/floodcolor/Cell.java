@@ -62,18 +62,17 @@ public class Cell {
 
     /**
      * getter used to get a specific cell's color*/
-    public Paint getCellColor(){
+    public Paint getCellPaint(){
 
         return this.paint;
     }
-
-    public int getColor(){
+    /**used to get a cell's Paint*/
+    public int getCellColor(){
 
         return this.paint.getColor();
     }
     /**get the cell's state */
     public boolean getState(){
-
         return this.isInFlood;
     }
 

@@ -14,8 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BoardView boardView;
     private Game game;
-    private int colorsCount = 4, boardSize = 10; //
-    private LinearLayout gameLayout;
+    private int colorsCount = 4, boardSize = 10;
     private Paint[] paint;
     private int[] colorsList;
 
@@ -43,15 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
         boardView.setGame(game);
         boardView.setBoardSize(boardSize);
+        boardView.setS(boardView.getWidth());
         boardView.initData();
         //boardView.retrieveBoard(game.getBoard());
-
 
     }
 
     /** load the colors*/
     public void initColors(){
- /*load and set the colors*/
 
         try{
             //Retrieve the colors from an array
@@ -87,18 +85,17 @@ public class MainActivity extends AppCompatActivity {
 
             //create a new button
             final Button aButton = new Button(this);
-            //aButton.setText(i);
             aButton.setBackgroundColor(colorsList[i]);
-           // aButton.getBackground().setColorFilter(colorsList[i], PorterDuff.Mode.MULTIPLY);
+            //aButton.getBackground().setColorFilter(colorsList[i], PorterDuff.Mode.MULTIPLY);
             //aButton.setPadding(10, 10, 10, 10);
-            //aButton.setTextSize(40);
             aButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //Log.i("Button", "click");
-                    getClickedColor(aButton);
+                    //getClickedColor(aButton);
                    // game.changeColor();
-                    game.checkNeighbor(aButton);
+                    //game.setSelectedColor(getClickedColor(aButton));
+                    game.checkNeighbor(getClickedColor(aButton));
                     boardView.setGame(game);
                 }
             });
@@ -108,12 +105,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**get the color clicked by the user by retrieving the button's color*/
-    public void getClickedColor(Button button){
+    /**When the user clicks a button we retrieve that button's color */
+    public int getClickedColor(Button button){
 
-        //Drawable buttonBackground = button.getBackground();
+         /*get the button's color*/
         ColorDrawable buttonColor = (ColorDrawable) button.getBackground();
+        //int colorId = buttonColor.getColor();
         Log.i("result",""+buttonColor);
 
+        /*return it as an int*/
+        return buttonColor.getColor();
     }
 }
