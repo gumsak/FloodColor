@@ -42,10 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         boardView.setGame(game);
         boardView.setBoardSize(boardSize);
-        boardView.setS(boardView.getWidth());
         boardView.initData();
-        //boardView.retrieveBoard(game.getBoard());
-
     }
 
     /** load the colors*/

@@ -18,18 +18,14 @@ public class BoardView extends View {
     private int boardSize;
     private int cellSize;
     private Paint[] paint;
-    private int mSize = 1050;//screen's width/height
-private int s;
+    private int mSize ;//screen's width/height
 
-    // anchors used to center the board in the view
+    /* anchors used to center the board in the view*/
     int boardTopAnchor;// Y position of our anchor
     int boardLeftAnchor;// X position of our anchor
 
     public BoardView(Context context, AttributeSet attrs){
         super(context, attrs);
-
-       // initData();
-        //initBoard();
     }
 
     /**set the actual game we are about to play*/
@@ -42,10 +38,6 @@ private int s;
         this.boardSize = size;
     }
 
-    public void setS(int size){
-        this.s = size;
-    }
-
     public void setPaint(Paint p[]){
         this.paint = p;
     }
@@ -53,15 +45,18 @@ private int s;
     //load and/or initialize the data used
     public void initData(){
 
+        /*TODO : use the getWidth() method to retrieve the proper dimensions*/
+
+        mSize = getWidth();
+
         /*initialize the cells' size*/
         cellSize = mSize / boardSize;
-int y = this.s;
-        int z = getHeight();
+
         /*initialize the anchors*/
         boardTopAnchor = (mSize - boardSize*cellSize)/2;
         boardLeftAnchor = (mSize - boardSize*cellSize)/2;
 
-        /*Initialize the board's game*/
+        /*set the board*/
         this.board = game.getBoard();
     }
 
@@ -69,6 +64,8 @@ int y = this.s;
     public void drawBoard(Canvas canvas){
 
         int i, j;
+
+        initData();
 
         for (j = 0; j < boardSize; j++) {
             for (i = 0; i < boardSize; i++) {
@@ -78,20 +75,8 @@ int y = this.s;
                         (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor);
 
                 canvas.drawRect(board[j][i].getRect(), board[j][i].getCellPaint());
-
-              /*canvas.drawRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
-                      (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor, paint[k]);*/
             }
         }
-
-      /*for (j = 0; j < boardSize; j++) {
-          for (i = 0; i < boardSize; i++) {
-              //draw the cells (squares)
-              //void drawRect(float left, float top, float right, float bottom, Paint paint)
-              canvas.drawRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
-                      (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor, paint[k]);
-          }
-      }*/
     }
 
     /**
@@ -99,8 +84,5 @@ int y = this.s;
     @Override
     protected void onDraw(Canvas canvas){
         drawBoard(canvas);
-
-        int q = getWidth();
-        Log.i("",""+q);
     }
 }

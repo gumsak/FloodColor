@@ -20,7 +20,7 @@ public class Game {
     private Paint[] paint;
     private int selectedColor;//the color clicked by the player
 
-    /**A default game if nothing id specified*/
+    /**A default game if nothing is specified*/
     public Game(){
         this.board = new Cell[5][5]; //we initialize a 2D 5*5 board
         this.colorNumber = 4; //we set it to 4 different colors
