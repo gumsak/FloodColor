@@ -13,11 +13,12 @@ public class MainActivity extends AppCompatActivity {
 
     private BoardView boardView;
     private Game game;
-    private int colorsCount = 6, boardSize = 15;
+    private int colorsCount = 3, boardSize = 3;
     private Paint[] paint;
     private int[] colorsList;
 
-    /*the clickable buttons' size*/
+    /*the clickable buttons' size
+    * TODO : set their size dynamically*/
     private int buttonHeight = 160;
     private int buttonWidth = 160;
 
@@ -74,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
         boardView.setPaint(paint);
     }
 
-    /**
-     * add interactive 'buttons' under the board*/
+    /**add interactive 'buttons' under the board*/
     public void setButtons(LinearLayout layout){
 
         int i;

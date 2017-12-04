@@ -4,13 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /***
  * This is the BoardView Class, it will take care of drawing a board in a View
  */
-
 public class BoardView extends View {
 
     private Game game;
@@ -69,10 +67,10 @@ public class BoardView extends View {
         for (j = 0; j < boardSize; j++) {
             for (i = 0; i < boardSize; i++) {
 
-              /*draw the cells : void drawRect(float left, float top, float right, float bottom, Paint paint)*/
+                /*draw the cells : void drawRect(float left, float top, float right, float bottom, Paint paint)*/
                 board[j][i].setRect(i * cellSize + boardLeftAnchor, j * cellSize + boardTopAnchor,
                         (i + 1) * cellSize + boardLeftAnchor, (j + 1) * cellSize + boardTopAnchor);
-
+                /* Draw the specified rectangle */
                 canvas.drawRect(board[j][i].getRect(), board[j][i].getCellPaint());
             }
         }

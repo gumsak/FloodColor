@@ -1,17 +1,13 @@
 package com.example.gmsk.floodcolor;
 
 import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.widget.Button;
-
 import java.util.Random;
 
 /**
  * One individual game : ie the size of the board, the number of colors, number of points, timer,
  * etc...
  */
-
 public class Game {
 
     private Cell[][] board;
@@ -48,8 +44,6 @@ public class Game {
         for (j = 0; j < boardSize; j++) {
             for (i = 0; i < boardSize; i++) {
                 this.board[j][i] = new Cell(paint[getRand(colorNumber)]);
-                this.board[j][i].setX(i);
-                this.board[j][i].setY(j);
             }
         }
         /*Initialize the starting cell (the top left cell [0;0] will be the starting point)*/
@@ -60,12 +54,14 @@ public class Game {
 
     /**
      * Check a cell's neighbors and change its color
-     * @param pickedColor : the button that was clicked (we retrieve its color)*/
+     * @param pickedColor : the color that was clicked by the player*/
     public void checkNeighbor(int pickedColor) {
 
         setSelectedColor(pickedColor);
 
         int bLen = board.length; //the board's length
+
+        checkIfWon(board,bLen);
 
         for (int j = 0; j < bLen; j++) {
             for (int i = 0; i < bLen; i++) {
@@ -75,11 +71,14 @@ public class Game {
                     are out of the flood and have the same color*/
                     if(!isOutOfBound(j+1)) {
                         if ((!board[j + 1][i].getState()) && compareColors(board[j + 1][i], selectedColor)) {
+                            /*if they do, the we change their color and state*/
                             changeColor(board[j][i], selectedColor);
                             board[j + 1][i].setState(true);
+                            /*recursive call to check the neighbor's neighbors, etc...*/
                             checkNeighbor(selectedColor);
                         }
                     }
+                    //Make sure that the cell we are about to check is inside the board
                     if(!isOutOfBound(j-1)) {
                         if ((!board[j-1][i].getState()) && compareColors(board[j-1][i], selectedColor)){
                             changeColor(board[j][i], selectedColor);
@@ -101,6 +100,7 @@ public class Game {
                             checkNeighbor(selectedColor);
                         }
                     }
+                    //not an actual error
                     else Log.e("Error","Color problem : checkNeighbor func");
 
                     /*TODO : remove quick fix*/
@@ -109,7 +109,6 @@ public class Game {
             }
         }
     }
-
 
     /**Change a cell's color and its state*/
     public void changeColor(Cell cell, int newColor){
@@ -138,6 +137,21 @@ public class Game {
     /**set the color selected by the player*/
     public void setSelectedColor(int color){
         this.selectedColor = color;
+    }
+
+    /**Check if the game is won (all the cells have the same color), by checking all the cell's
+     * state*/
+    public boolean checkIfWon(Cell[][] cell, int size){
+
+        for (int j = 0; j < size; j++) {
+            for (int i = 0; i < size; i++) {
+                if (!cell[j][i].getState()) {
+                    return false;
+                }
+            }
+        }
+        Log.i("End Game","You Won");
+        return true;
     }
 
     /**
