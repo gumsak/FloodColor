@@ -30,6 +30,7 @@
         android:id="@+id/buttonsDisplay"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:padding="5dp"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_weight="1">

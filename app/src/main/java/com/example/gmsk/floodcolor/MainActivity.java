@@ -11,12 +11,16 @@ import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private BoardView boardView;
     private Game game;
-    private int colorsCount = 4, boardSize = 10;
+    private int colorsCount = 6, boardSize = 15;
     private Paint[] paint;
     private int[] colorsList;
+
+    /*the clickable buttons' size*/
+    private int buttonHeight = 160;
+    private int buttonWidth = 160;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void startGame(){
         this.game = new Game(boardSize, colorsCount, paint);
-        //this.game.initBoard();
         initBoard();
     }
 
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         boardView.initData();
     }
 
-    /** load the colors*/
+    /** load the colors from the resources*/
     public void initColors(){
 
         try{
@@ -82,21 +85,27 @@ public class MainActivity extends AppCompatActivity {
 
             //create a new button
             final Button aButton = new Button(this);
+            //set the button's color
             aButton.setBackgroundColor(colorsList[i]);
             //aButton.getBackground().setColorFilter(colorsList[i], PorterDuff.Mode.MULTIPLY);
-            //aButton.setPadding(10, 10, 10, 10);
+            /*initialize the button's parameters for the layout*/
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(10, 0, 10, 0);
+            params.height = buttonHeight;
+            params.width = buttonWidth;
+            aButton.setLayoutParams(params);
+
             aButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Log.i("Button", "click");
-                    //getClickedColor(aButton);
-                   // game.changeColor();
                     //game.setSelectedColor(getClickedColor(aButton));
                     game.checkNeighbor(getClickedColor(aButton));
                     boardView.setGame(game);
                 }
             });
-
             //add the button to the layout
             layout.addView(aButton);
         }
@@ -108,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
          /*get the button's color*/
         ColorDrawable buttonColor = (ColorDrawable) button.getBackground();
         //int colorId = buttonColor.getColor();
-        Log.i("result",""+buttonColor);
+        //Log.i("result",""+buttonColor);
 
         /*return it as an int*/
         return buttonColor.getColor();

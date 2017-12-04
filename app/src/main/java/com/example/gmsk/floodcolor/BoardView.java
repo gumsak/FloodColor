@@ -45,8 +45,7 @@ public class BoardView extends View {
     //load and/or initialize the data used
     public void initData(){
 
-        /*TODO : use the getWidth() method to retrieve the proper dimensions*/
-
+        //get the view's width
         mSize = getWidth();
 
         /*initialize the cells' size*/

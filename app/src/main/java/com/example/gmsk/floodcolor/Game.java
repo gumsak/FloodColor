@@ -59,61 +59,8 @@ public class Game {
     }
 
     /**
-     * Check a cell's neighbors and return the ones with the same color
-     * @param button : the button that was clicked (we retrieve its color)*/
-    public void checkNeighbor(Button button) {
-
-        int bLen = board.length; //the board's length
-
-        /*get the button's color*/
-        ColorDrawable buttonColor = (ColorDrawable) button.getBackground();
-        /*convert it as an int*/
-        int colorId = buttonColor.getColor();
-
-        for (int j = 0; j < bLen; j++) {
-            for (int i = 0; i < bLen; i++) {
-                //if the cell is part of the flood
-                if (board[j][i].getState()){
-                    /*then check if its neighbors (right neigh, bot neigh, left neigh, top neigh)
-                    are out of the flood and have the same color*/
-                    //TODO : change the conditions, not working properly
-                    if(!isOutOfBound(j+1)) {
-                        if (!board[j + 1][i].getState() && compareColors(board[j + 1][i], colorId)) {
-                            changeColor(board[j][i], colorId);
-                            board[j + 1][i].setState(true);
-                            checkNeighbor(button);
-                        }
-                    }
-                    if(!isOutOfBound(j-1)) {
-                        if (!board[j-1][i].getState() && compareColors(board[j-1][i],colorId)){
-                            changeColor(board[j][i], colorId);
-                            board[j-1][i].setState(true);
-                            checkNeighbor(button);
-                        }
-                    }
-                    if(!isOutOfBound(i+1)) {
-                        if (!board[j][i + 1].getState() && compareColors(board[j][i + 1], colorId)) {
-                            changeColor(board[j][i], colorId);
-                            board[j][i + 1].setState(true);
-                            checkNeighbor(button);
-                        }
-                    }
-                    if(!isOutOfBound(i-1)) {
-                        if (!board[j][i - 1].getState() && compareColors(board[j][i - 1], colorId)) {
-                            changeColor(board[j][i], colorId);
-                            board[j][i - 1].setState(true);
-                            checkNeighbor(button);
-                        }
-                    }
-                    else Log.e("Erreur","PB couleur");
-                }
-            }
-        }
-    }
-
-    /**
-     * TEST FUNCTION
-     * TODO : delete this one or the checkNeighbor(Button) method*/
+     * Check a cell's neighbors and change its color
+     * @param pickedColor : the button that was clicked (we retrieve its color)*/
     public void checkNeighbor(int pickedColor) {
 
         setSelectedColor(pickedColor);
