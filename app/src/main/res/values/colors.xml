@@ -16,9 +16,9 @@
     <array name="boardColors">
         <item>@color/red</item>
         <item>@color/blue</item>
-        <item>@color/sky</item>
         <item>@color/green</item>
         <item>@color/pink</item>
+        <item>@color/sky</item>
         <item>@color/yellow</item>
     </array>
 

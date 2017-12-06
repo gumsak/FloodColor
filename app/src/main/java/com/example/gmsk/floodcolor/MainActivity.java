@@ -1,17 +1,21 @@
 package com.example.gmsk.floodcolor;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
     private Paint[] paint;
     private int[] colorsList;
 
+    private int screenX;// the screen's width
+
     /*the clickable buttons' size
     * TODO : set their size dynamically*/
-    private int buttonHeight = 160;
-    private int buttonWidth = 160;
-
+    private int buttonSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
         int i;
 
+        setButtonSize();
+
         /*create the given number of buttons and add them to the layout */
         for(i=0; i< colorsCount; i++){
 
@@ -100,9 +106,9 @@ public class MainActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            params.setMargins(10, 0, 10, 0);
-            params.height = buttonHeight;
-            params.width = buttonWidth;
+            params.setMargins(5, 0, 5, 0);
+            params.height = buttonSize;
+            params.width = buttonSize;
             aButton.setLayoutParams(params);
 
             aButton.setOnClickListener(new View.OnClickListener() {
@@ -111,9 +117,9 @@ public class MainActivity extends AppCompatActivity {
                     //game.setSelectedColor(getClickedColor(aButton));
                     game.checkNeighbor(getClickedColor(aButton));
                     boardView.setGame(game);
-                    //alertDial();
-                    //if the game is finished we call the endGameDialog() method
-                    if(game.getGameStatus()) endGameDialog();
+
+                    //check if the game is finished
+                    checkEndGame();
                 }
             });
             //add the button to the layout
@@ -121,43 +127,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**When the user clicks a button we retrieve that button's color */
-    public int getClickedColor(Button button){
+    /**Check if the game has ended : if the player won or if he lost*/
+    public void checkEndGame(){
 
-         /*get the button's color*/
-        ColorDrawable buttonColor = (ColorDrawable) button.getBackground();
-        //int colorId = buttonColor.getColor();
-        //Log.i("result",""+buttonColor);
+        /*if the player got all the cells*/
+        if(game.getGameStatus())
+            //display the "WIN" dialog
+            endGameDialog(1);
 
-        /*return it as an int*/
-        return buttonColor.getColor();
+        /*else if the player lost ......*/
+
     }
 
-    /**create a dialog window when the game is finished*/
-    public void endGameDialog() {
+    /**create a dialog window when the game is finished
+     * @param result : this is the game's result, 1 if the player won, 0 if he lost*/
+    public void endGameDialog(int result) {
 
         // custom dialog
         final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);////////////////////
         dialog.setContentView(R.layout.end_choice_layout);
-        dialog.setTitle("Title...");
+        dialog.setCancelable(false);//can't dismiss the dialog by clicking outside
 
-        // set the custom dialog components - text, image and button
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//////////
+
         TextView text = dialog.findViewById(R.id.text);
-        text.setText(getString(R.string.you_win));
-       /* ImageView image = (ImageView) dialog.findViewById(R.id.image);
-        image.setImageResource(R.drawable.ic_launcher);*/
-
-        Button nextButton = dialog.findViewById(R.id.buttonNext);
         Button replayButton = dialog.findViewById(R.id.buttonReplay);
-
-        // if the "next" button is clicked, go to next level
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextLevel();
-                dialog.dismiss();
-            }
-        });
+        Button nextButton = dialog.findViewById(R.id.buttonNext);
 
         // if the "replay" button is clicked, then reload the game
         replayButton.setOnClickListener(new View.OnClickListener() {
@@ -168,21 +164,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        dialog.show();
-    }
+        /*In case of a win load the win texts in the dialog*/
+        if(result == 1){
 
-    /**IN PROGRESS*/
-    public void alertDial(){
+            text.setText(getString(R.string.you_win));
 
-// 1. Instantiate an AlertDialog.Builder with its constructor
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // if the "next" button is clicked, go to next level
+            nextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    nextLevel();
+                    dialog.dismiss();
+                }
+            });
+        }
+        /*In case we lose, set the appropriate dialog title (lose),
+         keep the "replay" button and hide the "next" one*/
+        else if (result == 0){
 
-// 2. Chain together various setter methods to set the dialog characteristics
-        builder.setMessage("ehehe")
-                .setTitle("T");
+            text.setText(getString(R.string.you_lose));
+            nextButton.setVisibility(View.GONE);
+        }
 
-// 3. Get the AlertDialog from create()
-        AlertDialog dialog = builder.create();
         dialog.show();
     }
 
@@ -192,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
         this.buttonsLayout.removeAllViews();/*delete the buttons so we can recreate an amount that*
         matches the new amount of colors, otherwise the buttons would add up on the layout */
 
+        //start a new game
         startGame();
     }
 
@@ -204,5 +208,45 @@ public class MainActivity extends AppCompatActivity {
         matches the new amount of colors*/
 
         startGame();
+    }
+
+    /**When the user clicks a button we retrieve that button's color */
+    public int getClickedColor(Button button){
+
+        /*get the button's color*/
+        ColorDrawable buttonColor = (ColorDrawable) button.getBackground();
+        //int colorId = buttonColor.getColor();
+        //Log.i("result",""+buttonColor);
+
+        /*return it as an int*/
+        return buttonColor.getColor();
+    }
+
+    /**get the screen's width*/
+    public int getScreenSize(){
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
+    }
+
+    /**
+     * generate a random int between 0 and n-1
+     * */
+    public int getRand(int n){
+        Random rand = new Random();
+        return rand.nextInt(n);
+    }
+
+    /**set the buttons' size according to screen's size*/
+    public void setButtonSize(){
+        int a;
+        a = getScreenSize();
+        this.buttonSize =  (a / this.colorsCount) - 30;
+    }
+
+    /**set the dialog window's size according to the screen's size*/
+    public void setDialogSize(){
+
     }
 }
