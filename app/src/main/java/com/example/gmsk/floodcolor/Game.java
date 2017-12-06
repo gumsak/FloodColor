@@ -15,6 +15,7 @@ public class Game {
     private int colorNumber;//number of different colors
     private Paint[] paint;
     private int selectedColor;//the color clicked by the player
+    private boolean gamedEnded;//whether the game is finished or not
 
     /**A default game if nothing is specified*/
     public Game(){
@@ -27,6 +28,7 @@ public class Game {
         this.boardSize = size;
         this.colorNumber = colors;
         this.paint = p;
+        this.gamedEnded = false;
 
         initBoard();
     }
@@ -63,48 +65,50 @@ public class Game {
 
         checkIfWon(board,bLen);
 
-        for (int j = 0; j < bLen; j++) {
-            for (int i = 0; i < bLen; i++) {
-                //if the cell is part of the flood
-                if (board[j][i].getState()){
+        if(!gamedEnded) {
+            for (int j = 0; j < bLen; j++) {
+                for (int i = 0; i < bLen; i++) {
+                    //if the cell is part of the flood
+                    if (board[j][i].getState()) {
                     /*then check if its neighbors (right one, bottom one, left one, top one)
                     are out of the flood and have the same color*/
-                    if(!isOutOfBound(j+1)) {
-                        if ((!board[j + 1][i].getState()) && compareColors(board[j + 1][i], selectedColor)) {
+                        if (!isOutOfBound(j + 1)) {
+                            if ((!board[j + 1][i].getState()) && compareColors(board[j + 1][i], selectedColor)) {
                             /*if they do, the we change their color and state*/
-                            changeColor(board[j][i], selectedColor);
-                            board[j + 1][i].setState(true);
+                                changeColor(board[j][i], selectedColor);
+                                board[j + 1][i].setState(true);
                             /*recursive call to check the neighbor's neighbors, etc...*/
-                            checkNeighbor(selectedColor);
+                                checkNeighbor(selectedColor);
+                            }
                         }
-                    }
-                    //Make sure that the cell we are about to check is inside the board
-                    if(!isOutOfBound(j-1)) {
-                        if ((!board[j-1][i].getState()) && compareColors(board[j-1][i], selectedColor)){
-                            changeColor(board[j][i], selectedColor);
-                            board[j-1][i].setState(true);
-                            checkNeighbor(selectedColor);
+                        //Make sure that the cell we are about to check is inside the board
+                        if (!isOutOfBound(j - 1)) {
+                            if ((!board[j - 1][i].getState()) && compareColors(board[j - 1][i], selectedColor)) {
+                                changeColor(board[j][i], selectedColor);
+                                board[j - 1][i].setState(true);
+                                checkNeighbor(selectedColor);
+                            }
                         }
-                    }
-                    if(!isOutOfBound(i+1)) {
-                        if ((!board[j][i + 1].getState()) && compareColors(board[j][i + 1], selectedColor)) {
-                            changeColor(board[j][i], selectedColor);
-                            board[j][i + 1].setState(true);
-                            checkNeighbor(selectedColor);
+                        if (!isOutOfBound(i + 1)) {
+                            if ((!board[j][i + 1].getState()) && compareColors(board[j][i + 1], selectedColor)) {
+                                changeColor(board[j][i], selectedColor);
+                                board[j][i + 1].setState(true);
+                                checkNeighbor(selectedColor);
+                            }
                         }
-                    }
-                    if(!isOutOfBound(i-1)) {
-                        if ((!board[j][i - 1].getState()) && compareColors(board[j][i - 1], selectedColor)) {
-                            changeColor(board[j][i], selectedColor);
-                            board[j][i - 1].setState(true);
-                            checkNeighbor(selectedColor);
+                        if (!isOutOfBound(i - 1)) {
+                            if ((!board[j][i - 1].getState()) && compareColors(board[j][i - 1], selectedColor)) {
+                                changeColor(board[j][i], selectedColor);
+                                board[j][i - 1].setState(true);
+                                checkNeighbor(selectedColor);
+                            }
                         }
-                    }
-                    //not an actual error
-                    else Log.e("Error","Color problem : checkNeighbor func");
+                        //not an actual error
+                        else Log.e("Error", "Color problem : checkNeighbor func");
 
                     /*TODO : remove quick fix*/
-                    changeColor(board[j][i], selectedColor);
+                        changeColor(board[j][i], selectedColor);
+                    }
                 }
             }
         }
@@ -151,7 +155,13 @@ public class Game {
             }
         }
         Log.i("End Game","You Won");
+        gamedEnded=true;
         return true;
+    }
+
+    /**check if the game if finished*/
+    public boolean getGameStatus(){
+        return gamedEnded;
     }
 
     /**
